@@ -14,8 +14,4 @@ public class VerificationCodePage {
         verificationButton.click();
     }
 
-//    public static void setVerificationCodeCucumber(String code) {
-//        verificationCode.should(Condition.appear).setValue(code);
-//        verificationButton.click();
-//    }
 }

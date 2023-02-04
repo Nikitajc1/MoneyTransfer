@@ -23,46 +23,53 @@ public class MoneyTransferTest {
 
     @Test
     void topUpFirstCardBalance() {
+        String number = "2000";
 
         login.loginIn(validName, validPassword);
         code.setVerificationCodeAndClick(validVerificationCode);
         account.mainPageCheck();
 
+        int check = account.getFirstCardBalance();
+        int check2 = account.getSecondCardBalance();
 
         account.firstButtonCheckAndClick();
-        replenish.amountSet("2000");
+        replenish.amountSet(number);
         replenish.fromSet(secondCard().getCardNUmber());
         replenish.confirmButtonClick();
         account.mainPageCheck();
 
-        String expected = "10000";
-        String actual = account.getFirstCardBalance();
+        int expected = check + Integer.parseInt(number);
+        int actual = account.getFirstCardBalance();
         Assertions.assertEquals(expected, actual);
 
-        String expected2 = "8000";
-        String actual2 = account.getSecondCardBalance();
+        int expected2 = check2 - Integer.parseInt(number);
+        int actual2 = account.getSecondCardBalance();
         Assertions.assertEquals(expected2, actual2);
     }
 
     @Test
     void topUpSecondCardBalance() {
+        String number = "2000";
 
         login.loginIn(validName, validPassword);
         code.setVerificationCodeAndClick(validVerificationCode);
         account.mainPageCheck();
 
+        int check = account.getFirstCardBalance();
+        int check2 = account.getSecondCardBalance();
+
         account.secondButtonCheckAndClick();
-        replenish.amountSet("2000");
+        replenish.amountSet(number);
         replenish.fromSet(firstCard().getCardNUmber());
         replenish.confirmButtonClick();
         account.mainPageCheck();
 
-        String expected = "12000";
-        String actual = account.getSecondCardBalance();
+        int expected = check2 + Integer.parseInt(number);
+        int actual = account.getSecondCardBalance();
         Assertions.assertEquals(expected, actual);
 
-        String expected2 = "10000";
-        String actual2 = account.getFirstCardBalance();
+        int expected2 = check - Integer.parseInt(number);
+        int actual2 = account.getFirstCardBalance();
         Assertions.assertEquals(expected2, actual2);
 
     }

@@ -7,7 +7,6 @@ public class ReplenishTheBalance {
     private final SelenideElement amountField = $("[data-test-id=amount] input");
     private final SelenideElement fromField = $("[data-test-id=from] input");
     private final SelenideElement confirmButton = $("[data-test-id=action-transfer]");
-    private final SelenideElement cancelButton = $("[data-test-id=action-cancel]");
 
     public void amountSet(String number) {
         amountField.setValue(number);
@@ -20,7 +19,5 @@ public class ReplenishTheBalance {
     public void confirmButtonClick() {
         confirmButton.click();
     }
-
-    public void cancelButtonClick() {cancelButton.click();}
 
 }

@@ -12,27 +12,27 @@ public class PersonalAccount {
     private final String balanceStart = "баланс: ";
     private final String balanceFinish = " р.";
     private final ElementsCollection topUpButtons = $$("[data-test-id=action-deposit]");
-    private final SelenideElement updateButton = $("[data-test-id=action-reload]");
 
     public void mainPageCheck() {
         mainPage.should(Condition.appear).shouldHave(Condition.exactText("Личный кабинет"));
         yourCards.should(Condition.appear).shouldHave(Condition.exactText("Ваши карты"));
     }
 
-    public String getFirstCardBalance() {
+    public int getFirstCardBalance() {
         var card = cards.first().text();
         return extractBalance(card);
     }
 
-    public String getSecondCardBalance() {
+    public int getSecondCardBalance() {
         var card = cards.last().text();
         return extractBalance(card);
     }
 
-    private String extractBalance(String text) {
+    private int extractBalance(String text) {
         var start = text.indexOf(balanceStart);
         var finish = text.indexOf(balanceFinish);
-        return text.substring(start + balanceStart.length(), finish);
+        var value = text.substring(start + balanceStart.length(), finish);
+        return Integer.parseInt(value);
     }
 
     public void firstButtonCheckAndClick() {
@@ -42,6 +42,4 @@ public class PersonalAccount {
     public void secondButtonCheckAndClick() {
         topUpButtons.get(1).shouldHave(Condition.exactText("Пополнить")).click();
     }
-
-    public void updateButtonClick() {updateButton.click();}
 }
