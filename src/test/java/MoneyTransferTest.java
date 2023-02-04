@@ -1,14 +1,20 @@
-import exception.Error;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static com.codeborne.selenide.Selenide.*;
 import static data.DataHelp.firstCard;
 import static data.DataHelp.secondCard;
-
 import loginData.*;
 
 
 public class MoneyTransferTest {
+    String validName = "vasya";
+    String validPassword = "qwerty123";
+    String validVerificationCode = "12345";
+    LoginPage login = new LoginPage();
+    VerificationCodePage code = new VerificationCodePage();
+    PersonalAccount account = new PersonalAccount();
+    ReplenishTheBalance replenish = new ReplenishTheBalance();
 
     @BeforeEach
     void openChrome() {
@@ -16,89 +22,49 @@ public class MoneyTransferTest {
     }
 
     @Test
-    void validLogin() {
-        Login.validLogin();
-        VerificationCode.setVerificationCodeAndClick();
-        PersonalAccount.mainPageCheck();
-    }
-
-    @Test
-    void invalidLogin() {
-        Login.invalidLogin();
-        Notifications.wrongLoginNotificationCheck();
-    }
-
-    @Test
     void topUpFirstCardBalance() {
-        String number = "2000";
 
-        Login.validLogin();
-        VerificationCode.setVerificationCodeAndClick();
-        PersonalAccount.mainPageCheck();
+        login.loginIn(validName, validPassword);
+        code.setVerificationCodeAndClick(validVerificationCode);
+        account.mainPageCheck();
 
-        int initialAmount = PersonalAccount.getFirstCardBalance();
 
-        Buttons.firstButtonCheckAndClick();
-        AmountFrom.amountSet(number);
-        AmountFrom.fromSet(secondCard().getSecondCard());
-        Buttons.confirmButtonClick();
-        PersonalAccount.mainPageCheck();
+        account.firstButtonCheckAndClick();
+        replenish.amountSet("2000");
+        replenish.fromSet(secondCard().getCardNUmber());
+        replenish.confirmButtonClick();
+        account.mainPageCheck();
 
-        int balanceNow = PersonalAccount.getFirstCardBalance();
-        int check = Integer.parseInt(number) + initialAmount;
+        String expected = "12000";
+        String actual = account.getFirstCardBalance();
+        Assertions.assertEquals(expected, actual);
 
-        if (balanceNow == check) {
-            closeWindow();
-        } else {
-            throw new Error("Неверное количество");
-        }
+        String expected2 = "8000";
+        String actual2 = account.getSecondCardBalance();
+        Assertions.assertEquals(expected2, actual2);
     }
 
     @Test
     void topUpSecondCardBalance() {
-        String number = "2000";
 
-        Login.validLogin();
-        VerificationCode.setVerificationCodeAndClick();
-        PersonalAccount.mainPageCheck();
+        login.loginIn(validName, validPassword);
+        code.setVerificationCodeAndClick(validVerificationCode);
+        account.mainPageCheck();
 
-        int initialAmount = PersonalAccount.getSecondCardBalance();
+        account.secondButtonCheckAndClick();
+        replenish.amountSet("2000");
+        replenish.fromSet(firstCard().getCardNUmber());
+        replenish.confirmButtonClick();
+        account.mainPageCheck();
 
-        Buttons.secondButtonCheckAndClick();
-        AmountFrom.amountSet(number);
-        AmountFrom.fromSet(firstCard().getFirstCard());
-        Buttons.confirmButtonClick();
-        PersonalAccount.mainPageCheck();
+        String expected = "10000";
+        String actual = account.getSecondCardBalance();
+        Assertions.assertEquals(expected, actual);
 
-        int balanceNow = PersonalAccount.getSecondCardBalance();
-        int check = Integer.parseInt(number) + initialAmount;
-
-        if (balanceNow == check) {
-            closeWindow();
-        } else {
-            throw new Error("Неверное количество");
-        }
-    }
-
-    @Test
-    void cancelButton() {
-        Login.validLogin();
-        VerificationCode.setVerificationCodeAndClick();
-        PersonalAccount.mainPageCheck();
-
-        Buttons.firstButtonCheckAndClick();
-        Buttons.cancelButtonClick();
-        PersonalAccount.mainPageCheck();
+        String expected2 = "10000";
+        String actual2 = account.getFirstCardBalance();
+        Assertions.assertEquals(expected2, actual2);
 
     }
 
-    @Test
-    void updateButton() {
-        Login.validLogin();
-        VerificationCode.setVerificationCodeAndClick();
-        PersonalAccount.mainPageCheck();
-
-        Buttons.updateButtonClick();
-        PersonalAccount.mainPageCheck();
-    }
 }

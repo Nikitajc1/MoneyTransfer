@@ -1,40 +1,47 @@
 package loginData;
-
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import data.DataHelp;
-import lombok.val;
-
 import static com.codeborne.selenide.Selectors.by;
 import static com.codeborne.selenide.Selenide.*;
 
 public class PersonalAccount {
-    private static final SelenideElement mainPage = $(by("data-test-id", "dashboard"));
-    private static final SelenideElement yourCards = $x("//h1");
-    private static final ElementsCollection cards = $$(".list__item div");
-    private static final String balanceStart = "баланс: ";
-    private static final String balanceFinish = " р.";
+    private final SelenideElement mainPage = $(by("data-test-id", "dashboard"));
+    private final SelenideElement yourCards = $x("//h1");
+    private final ElementsCollection cards = $$(".list__item div");
+    private final String balanceStart = "баланс: ";
+    private final String balanceFinish = " р.";
+    private final ElementsCollection topUpButtons = $$("[data-test-id=action-deposit]");
+    private final SelenideElement updateButton = $("[data-test-id=action-reload]");
 
-    public static void mainPageCheck() {
-        mainPage.should(Condition.appear).shouldHave(Condition.exactText(DataHelp.mainPageHeadline().getHeadline()));
+    public void mainPageCheck() {
+        mainPage.should(Condition.appear).shouldHave(Condition.exactText("Личный кабинет"));
         yourCards.should(Condition.appear).shouldHave(Condition.exactText("Ваши карты"));
     }
 
-    public static int getFirstCardBalance() {
-        val card = cards.first().text();
+    public String getFirstCardBalance() {
+        var card = cards.first().text();
         return extractBalance(card);
     }
 
-    public static int getSecondCardBalance() {
-        val card = cards.last().text();
+    public String getSecondCardBalance() {
+        var card = cards.last().text();
         return extractBalance(card);
     }
 
-    private static int extractBalance(String text) {
-        val start = text.indexOf(balanceStart);
-        val finish = text.indexOf(balanceFinish);
-        val value = text.substring(start + balanceStart.length(), finish);
-        return Integer.parseInt(value);
+    private String extractBalance(String text) {
+        var start = text.indexOf(balanceStart);
+        var finish = text.indexOf(balanceFinish);
+        return text.substring(start + balanceStart.length(), finish);
     }
+
+    public void firstButtonCheckAndClick() {
+        topUpButtons.get(0).shouldHave(Condition.exactText("Пополнить")).click();
+    }
+
+    public void secondButtonCheckAndClick() {
+        topUpButtons.get(1).shouldHave(Condition.exactText("Пополнить")).click();
+    }
+
+    public void updateButtonClick() {updateButton.click();}
 }
