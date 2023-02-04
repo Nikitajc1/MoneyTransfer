@@ -35,7 +35,7 @@ public class MoneyTransferTest {
         replenish.confirmButtonClick();
         account.mainPageCheck();
 
-        String expected = "12000";
+        String expected = "10000";
         String actual = account.getFirstCardBalance();
         Assertions.assertEquals(expected, actual);
 
@@ -57,7 +57,7 @@ public class MoneyTransferTest {
         replenish.confirmButtonClick();
         account.mainPageCheck();
 
-        String expected = "10000";
+        String expected = "12000";
         String actual = account.getSecondCardBalance();
         Assertions.assertEquals(expected, actual);
 
