@@ -1,21 +1,16 @@
+import data.DataHelp;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static com.codeborne.selenide.Selenide.*;
 import static data.DataHelp.firstCard;
 import static data.DataHelp.secondCard;
+import static data.DataHelp.validLogin;
+import static data.DataHelp.invalidLogin;
 import loginData.*;
 
 
 public class MoneyTransferTest {
-    String validName = "vasya";
-    String validPassword = "qwerty123";
-    String validVerificationCode = "12345";
-    LoginPage login = new LoginPage();
-    VerificationCodePage code = new VerificationCodePage();
-    PersonalAccount account = new PersonalAccount();
-    ReplenishTheBalance replenish = new ReplenishTheBalance();
-
     @BeforeEach
     void openChrome() {
         open("http://localhost:9999/");
@@ -23,10 +18,16 @@ public class MoneyTransferTest {
 
     @Test
     void topUpFirstCardBalance() {
+        var login = new LoginPage();
+        var code = new VerificationCodePage();
+        var account = new PersonalAccount();
+        var replenish = new ReplenishTheBalance();
+
+
         String number = "2000";
 
-        login.loginIn(validName, validPassword);
-        code.setVerificationCodeAndClick(validVerificationCode);
+        login.loginIn(validLogin().getLogin(), validLogin().getPassword());
+        code.setVerificationCodeAndClick(validLogin().getVerificationCode());
         account.mainPageCheck();
 
         int check = account.getFirstCardBalance();
@@ -49,10 +50,16 @@ public class MoneyTransferTest {
 
     @Test
     void topUpSecondCardBalance() {
+        var login = new LoginPage();
+        var code = new VerificationCodePage();
+        var account = new PersonalAccount();
+        var replenish = new ReplenishTheBalance();
+
+
         String number = "2000";
 
-        login.loginIn(validName, validPassword);
-        code.setVerificationCodeAndClick(validVerificationCode);
+        login.loginIn(validLogin().getLogin(), validLogin().getPassword());
+        code.setVerificationCodeAndClick(validLogin().getVerificationCode());
         account.mainPageCheck();
 
         int check = account.getFirstCardBalance();

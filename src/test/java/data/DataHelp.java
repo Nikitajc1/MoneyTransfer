@@ -10,6 +10,15 @@ public class DataHelp {
     public static class AuthInfo {
         String login;
         String password;
+        String verificationCode;
+    }
+
+    public static AuthInfo validLogin() {
+        return new AuthInfo("vasya", "qwerty123", "12345");
+    }
+
+    public static AuthInfo invalidLogin() {
+        return new AuthInfo("Kayta", "12345","11111");
     }
 
     @Value
