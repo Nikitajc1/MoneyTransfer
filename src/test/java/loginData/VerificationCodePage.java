@@ -9,9 +9,10 @@ public class VerificationCodePage {
     private final SelenideElement verificationCode = $("[data-test-id=code] input");
     private final SelenideElement verificationButton = $("[data-test-id=action-verify]");
 
-    public void setVerificationCodeAndClick(String code) {
+    public PersonalAccount setVerificationCodeAndClick(String code) {
         verificationCode.should(Condition.appear).setValue(code);
         verificationButton.click();
+        return new PersonalAccount().mainPageCheck();
     }
 
 }

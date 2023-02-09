@@ -9,9 +9,10 @@ public class LoginPage {
     private final SelenideElement password = $("[data-test-id=password] input");
     private final SelenideElement buttonClick = $("[data-test-id=action-login]");
 
-    public void loginIn(String name, String pass) {
+    public VerificationCodePage loginIn(String name, String pass) {
         login.setValue(name);
         password.setValue(pass);
         buttonClick.click();
+        return new VerificationCodePage();
     }
 }

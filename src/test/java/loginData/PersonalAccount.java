@@ -13,9 +13,10 @@ public class PersonalAccount {
     private final String balanceFinish = " р.";
     private final ElementsCollection topUpButtons = $$("[data-test-id=action-deposit]");
 
-    public void mainPageCheck() {
+    public PersonalAccount mainPageCheck() {
         mainPage.should(Condition.appear).shouldHave(Condition.exactText("Личный кабинет"));
         yourCards.should(Condition.appear).shouldHave(Condition.exactText("Ваши карты"));
+        return new PersonalAccount();
     }
 
     public int getFirstCardBalance() {
@@ -35,11 +36,13 @@ public class PersonalAccount {
         return Integer.parseInt(value);
     }
 
-    public void firstButtonCheckAndClick() {
+    public ReplenishTheBalance firstButtonCheckAndClick() {
         topUpButtons.get(0).shouldHave(Condition.exactText("Пополнить")).click();
+        return new ReplenishTheBalance();
     }
 
-    public void secondButtonCheckAndClick() {
+    public ReplenishTheBalance secondButtonCheckAndClick() {
         topUpButtons.get(1).shouldHave(Condition.exactText("Пополнить")).click();
+        return new ReplenishTheBalance();
     }
 }

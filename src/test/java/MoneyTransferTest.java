@@ -5,35 +5,29 @@ import org.junit.jupiter.api.Test;
 import static com.codeborne.selenide.Selenide.*;
 import static data.DataHelp.firstCard;
 import static data.DataHelp.secondCard;
-import static data.DataHelp.validLogin;
-import static data.DataHelp.invalidLogin;
 import loginData.*;
 
 
 public class MoneyTransferTest {
+    LoginPage login;
     @BeforeEach
     void openChrome() {
-        open("http://localhost:9999/");
+        login = open("http://localhost:9999/", LoginPage.class);
     }
 
     @Test
     void topUpFirstCardBalance() {
-        var login = new LoginPage();
-        var code = new VerificationCodePage();
-        var account = new PersonalAccount();
-        var replenish = new ReplenishTheBalance();
-
+        var vasyaLogin = DataHelp.validLogin();
 
         String number = "2000";
 
-        login.loginIn(validLogin().getLogin(), validLogin().getPassword());
-        code.setVerificationCodeAndClick(validLogin().getVerificationCode());
-        account.mainPageCheck();
+        var verif = login.loginIn(vasyaLogin.getLogin(), vasyaLogin.getPassword());
+        var account = verif.setVerificationCodeAndClick(vasyaLogin.getVerificationCode());
 
         int check = account.getFirstCardBalance();
         int check2 = account.getSecondCardBalance();
 
-        account.firstButtonCheckAndClick();
+        var replenish = account.firstButtonCheckAndClick();
         replenish.amountSet(number);
         replenish.fromSet(secondCard().getCardNUmber());
         replenish.confirmButtonClick();
@@ -50,22 +44,17 @@ public class MoneyTransferTest {
 
     @Test
     void topUpSecondCardBalance() {
-        var login = new LoginPage();
-        var code = new VerificationCodePage();
-        var account = new PersonalAccount();
-        var replenish = new ReplenishTheBalance();
-
+        var vasyaLogin = DataHelp.validLogin();
 
         String number = "2000";
 
-        login.loginIn(validLogin().getLogin(), validLogin().getPassword());
-        code.setVerificationCodeAndClick(validLogin().getVerificationCode());
-        account.mainPageCheck();
+        var verif = login.loginIn(vasyaLogin.getLogin(), vasyaLogin.getPassword());
+        var account = verif.setVerificationCodeAndClick(vasyaLogin.getVerificationCode());
 
         int check = account.getFirstCardBalance();
         int check2 = account.getSecondCardBalance();
 
-        account.secondButtonCheckAndClick();
+        var replenish = account.secondButtonCheckAndClick();
         replenish.amountSet(number);
         replenish.fromSet(firstCard().getCardNUmber());
         replenish.confirmButtonClick();
